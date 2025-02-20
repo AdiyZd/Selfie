@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             preConfirm: async (nama) => {
                 const allowedNames = ["Nabila", "Anisa", "Lita", "adi", "Adi"];
                 if (!nama) return Swal.showValidationMessage("Nama tidak boleh kosong!");
-                if (!allowedNames.includes(nama)) return Swal,showValidationMessage("Nama Tidak Terdaftar Silahkan Hubungi Mas Pur!");
+                if (!allowedNames.includes(nama)) return Swal.showValidationMessage("Nama Tidak Terdaftar Silahkan Hubungi Mas Pur!");
                 return nama;
             },
             allowOutsideClick: () => !Swal.isLoading()
