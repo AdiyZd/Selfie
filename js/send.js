@@ -22,7 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
         tanggalEl.textContent = `${namaHari}, ${tanggal} ${bulan} ${tahun}`;
     }
 
-    updateTanggal();
+    document.addEventListener("DOMContentLoaded", function () {
+        updateTanggal()
+    })
 
     openCamera.addEventListener("click", async function () {
         try {
