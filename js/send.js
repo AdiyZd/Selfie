@@ -70,14 +70,21 @@ document.addEventListener("DOMContentLoaded", function () {
         stream.getTracks().forEach(track => track.stop());
     
         // Ubah tombol ke mode loading
-        sendAbsensi.innerHTML = "⏳ Mengolah Foto...";
-        sendAbsensi.disabled = true;
-    
-        setTimeout(() => {
-            sendAbsensi.innerHTML = "📤 Send Foto";
-            sendAbsensi.disabled = false;
-            sendAbsensi.onclick = sendAbsensiTelegram;
-        }, 3000);
+        Swal.fire({
+            title: "Mengambil Foto",
+            html: "Tunggu sebentar",
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }, 
+
+            willClose: () => {
+                sendAbsensi.innerHTML = "📤 send Foto Absensi",
+                sendAbsensi.disabled = false;
+                sendAbsensi.onclick = sendAbsensiTelegram;
+            }
+        })
     }
     
     
