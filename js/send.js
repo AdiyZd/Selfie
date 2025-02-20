@@ -54,10 +54,15 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.height = video.videoHeight;
     
         // Gambar video ke dalam canvas
+        ctx.translate(canvas.width, 0)
+        ctx.scale(-1, 1)
+        
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
+        
         let dataURL = canvas.toDataURL("image/jpeg", 1.0);
         photoPreview.src = dataURL;
+
+        ctx.setTransfrom(1, 0, 0, 1, 0);
     
         // Pastikan ukuran tampilan preview tetap sama seperti video
         photoPreview.style.width = `${video.clientWidth}px`;
@@ -84,8 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendAbsensi.disabled = false;
                 sendAbsensi.onclick = sendAbsensiTelegram;
             }
-        })
-    }
+        });
+    };
     
     
 

@@ -24,6 +24,14 @@ body.dark-mode {
     object-fit: cover;
 }
 
+#cameraFeed {
+    transform: skewX(-1);
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
 canvas {
     display: none; /* Hindari tampil jika tidak perlu */
     width: auto !important;
