@@ -103,7 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const nama = result.value.trim().substring(0, 50); // Hindari teks terlalu panjang
                 const now = new Date();
                 const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                const tanggal = document.getElementById("tanggal").textContent.trim().substring(0, 50);
+                const tanggal = document.getElementById("tanggal")?.textContent?.trim()?.substring(0, 50) || "Tanggal Tidak Ditemukan";
+    
+                let timerInterval; // ✅ Fix: Deklarasikan timerInterval agar bisa digunakan di willClose()
     
                 Swal.fire({
                     title: "Mengirim Absensi...",
@@ -113,11 +115,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     didOpen: () => {
                         Swal.showLoading();
                         const timer = Swal.getPopup().querySelector("b");
-                        let timerInterval = setInterval(() => {
+                        timerInterval = setInterval(() => {
                             timer.textContent = `${Swal.getTimerLeft() / 1000}`;
                         }, 100);
                     },
-                    willClose: () => clearInterval(timerInterval)
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
                 }).then(async () => {
                     const telegramBotToken = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
                     const chatId = "7355777672";
@@ -130,21 +134,23 @@ document.addEventListener("DOMContentLoaded", function () {
     
                     try {
                         const canvas = document.getElementById("canvasID"); // Pastikan ID benar
+                        if (!canvas) throw new Error("Canvas tidak ditemukan!"); // ✅ Fix: Cegah error jika canvas tidak ada
+                        
                         const blob = await canvasToBlobAsync(canvas);
     
                         let formData = new FormData();
                         formData.append("chat_id", chatId);
                         formData.append("photo", blob, "Absensi.jpg");
     
-                        const caption = `Absensi\n ${nama}\n pada ${tanggal}\n jam ${jam}`;
-                        console.log(`Caption Length: ${caption.length}`);
-                        console.log(`Caption Content: ${caption}`);
-    
-                        if (caption.length > 100) {
+                        let caption = `Absensi\n${nama}\npada ${tanggal}\njam ${jam}`;
+                        if (caption.length > 1024) {
                             console.warn("Caption terlalu panjang, memotong teks...");
+                            caption = caption.substring(0, 1024); // ✅ Fix: Batasi panjang caption maksimal 1024 karakter
                         }
     
-                        formData.append("caption", caption.substring(0, 100));
+                        console.log(`Caption Length: ${caption.length}`);
+                        console.log(`Caption Content: ${caption}`);
+                        formData.append("caption", caption);
     
                         const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
                             method: "POST",
@@ -159,13 +165,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                 icon: "success",
                                 draggable: true
                             });
-                            saveToExcel(nama, tanggal, jam, photoPreview.src);
+    
+                            if (typeof saveToExcel === "function") {
+                                const photoPreview = document.getElementById("photoPreview");
+                                saveToExcel(nama, tanggal, jam, photoPreview?.src || "Foto tidak ditemukan");
+                            } else {
+                                console.warn("Fungsi saveToExcel() tidak ditemukan!");
+                            }
                         } else {
                             console.error("Telegram API Error:", data);
                             Swal.fire({
                                 icon: "error",
                                 title: "Error Silahkan Coba Lagi",
-                                text: "Gagal Mengirim Absensi Periksa Koneksi Anda!"
+                                text: `Gagal Mengirim Absensi. Error: ${data.description || "Tidak diketahui"}`
                             });
                         }
                     } catch (error) {
