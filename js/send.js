@@ -112,9 +112,18 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert("Absensi berhasil dikirim!");
+                    Swal.alert({
+                        title: "Absensi Berhasil Di Kirim",
+                        icon: "success",
+                        draggable: true
+                    });
                 } else {
-                    alert("Gagal mengirim absensi.");
+                    Swal.alert({
+                        icon: "error",
+                        title: "Error Silahkan Coba Lagi",
+                        text: "Gagal Mengirim Absensi Periksa Koneksi Anda!",
+                        footer: '<a href="#"> Kenapa Ini Terjadi? </a>'
+                    });
                 }
             })
             .catch(error => alert("Error: " + error));
