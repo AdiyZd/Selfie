@@ -2,6 +2,7 @@ const { response, text } = require("express");
 const { Types } = require("twilio/lib/rest/content/v1/content");
 
 document.addEventListener("DOMContentLoaded", function () {
+    updateTanggal()
     const openCamera = document.getElementById("openCamera");
     const video = document.getElementById("cameraFeed");
     const canvas = document.getElementById("photoCanvas");
@@ -12,19 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let absensiData = []; // Menyimpan data absen dalam array
 
     function updateTanggal() {
-        let tanggalEl = document.getElementById("tanggal");
+        // let tanggalEl = document.getElementById("#");
         let now = new Date();
         let hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         let namaHari = hari[now.getDay()];
         let tanggal = now.getDate();
         let bulan = now.toLocaleString('id-ID', { month: 'long' });
         let tahun = now.getFullYear();
-        tanggalEl.textContent = `${namaHari}, ${tanggal} ${bulan} ${tahun}`;
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        updateTanggal()
-    })
 
     openCamera.addEventListener("click", async function () {
         try {
@@ -40,9 +36,19 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAbsensi.classList.remove("d-none");
             sendAbsensi.innerHTML = "📸 Ambil Foto";
             sendAbsensi.onclick = capturePhoto;
+
+            console.log("Mencoba Mengacces Kamera");
+            navigator.mediaDevices.getUserMedia({video: true})
+            .then(stream => console.log("Kamera Berhasil Di Buka", stream))
+            .then((value) => console.log("Gagal Mengacces Kamera", error));
         } catch (error) {
             alert("Gagal mengakses kamera: " + error);
         }
+        
+        console.log("Mencoba Mengacces Kamera");
+        navigator.mediaDevices.getUserMedia({video: true})
+        .then(stream => console.log("Kamera Berhasil Di Buka", stream))
+        .then((value) => console.log("Gagal Mengacces Kamera", error));        
     });
 
     function capturePhoto() {
