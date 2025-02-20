@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (!canvas) {
                             console.error("Canvas Tidak Di Temukan");
                             throw new Error("Canvas Tidak di temukan")
-                        } // ✅ Fix: Cegah error jika canvas tidak ada
+                        } 
                         console.log("canvas ditemukan: ", canvas)
                         
                         const blob = await canvasToBlobAsync(canvas);
