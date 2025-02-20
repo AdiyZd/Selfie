@@ -34,17 +34,15 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAbsensi.innerHTML = "📸 Ambil Foto";
             sendAbsensi.onclick = capturePhoto;
 
-            console.log("Mencoba Mengacces Kamera");
-            navigator.mediaDevices.getUserMedia({video: true})
-            .then(stream => console.log("Kamera Berhasil Di Buka", stream))
-            .catch((error) => console.log("Gagal Mengacces Kamera", error));
+            // .then(stream => console.log("Kamera Berhasil Di Buka", stream))
+            //.then((error) => console.log("Gagal Mengacces Kamera", error));
         } catch (error) {
             alert("Gagal mengakses kamera: " + error);
         }
 
         console.log("Mencoba Mengacces Kamera");
         navigator.mediaDevices.getUserMedia({video: true})
-        .then(stream => console.log("Kamera Berhasil Di Buka", stream))
+        //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
         .then((value) => console.log("Gagal Mengacces Kamera", error));        
     });
 
@@ -85,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function sendAbsensiTelegram() {
+    async function sendAbsensiTelegram() {
         Swal.fire({
             title: "Masukkan Nama Anda",
             input: "text",
@@ -100,13 +98,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 return nama;
             },
             allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 const nama = result.value;
                 const now = new Date();
                 const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const tanggal = document.getElementById("tanggal").textContent;
-
+    
                 Swal.fire({
                     title: "Mengirim Absensi...",
                     html: "Foto akan dikirim dalam <b></b> detik.",
@@ -116,53 +114,59 @@ document.addEventListener("DOMContentLoaded", function () {
                         Swal.showLoading();
                         const timer = Swal.getPopup().querySelector("b");
                         let timerInterval = setInterval(() => {
-                            timer.textContent = `${Swal.getTimerLeft() / 1000}`;
+                            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(1)}`;
                         }, 100);
-                    },
-                    willClose: () => clearInterval(timerInterval)
-                }).then(() => {
+                    }
+                }).then(async () => {
                     const telegramBotToken = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
                     const chatId = "7355777672";
-
-                    canvas.toBlob(function (blob) {
+    
+                    function canvasToBlobAsync(canvas) {
+                        return new Promise((resolve) => {
+                            canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+                        });
+                    }
+    
+                    try {
+                        const blob = await canvasToBlobAsync(canvas); // Tunggu hasil blob
                         let formData = new FormData();
                         formData.append("chat_id", chatId);
-                        formData.append("photo", blob, "absensi.jpg");
-                        formData.append("caption", `Absensi: ${tanggal}\nJam: ${jam}\nNama: ${nama}`);
-
-                        fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
+                        formData.append("photo", blob, "Absensi.jpg");
+                        formData.append("caption", `Absensi: ${tanggal}\n Jam: ${jam}\n Nama: ${nama}`);
+    
+                        const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
                             method: "POST",
                             body: formData
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.ok) {
-                                Swal.fire({
-                                    title: "Absensi Berhasil Dikirim",
-                                    icon: "success",
-                                    draggable: true
-                                });
-                                saveToExcel(nama, tanggal, jam, photoPreview.src);
-                            } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Error Silahkan Coba Lagi",
-                                    text: "Gagal Mengirim Absensi Periksa Koneksi Anda!"
-                                });
-                            }
-                        })
-                        .catch(error => {
+                        });
+    
+                        const data = await response.json();
+    
+                        if (data.ok) {
+                            Swal.fire({
+                                title: "Absensi Berhasil Dikirim!",
+                                icon: "success",
+                                draggable: true
+                            });
+                            saveToExcel(nama, tanggal, jam, photoPreview.src); // Simpan jika tidak error
+                        } else {
                             Swal.fire({
                                 icon: "error",
-                                title: "Error",
-                                text: `Terjadi kesalahan: ${error}`
+                                title: "Error Silahkan Coba Lagi",
+                                text: "Gagal Mengirim Absensi Periksa Koneksi Anda!"
                             });
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: `Terjadi kesalahan: ${error}`
                         });
-                    }, "image/jpeg");
+                    }
                 });
             }
         });
     }
+    
 
     function saveToExcel(nama, tanggal, jam, fotoBase64) {
         const bulanSekarang = new Date().toLocaleString('id-ID', { month: 'long', year: 'numeric' });
