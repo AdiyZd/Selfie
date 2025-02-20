@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let dataURL = canvas.toDataURL("image/jpeg", 1.0);
         photoPreview.src = dataURL;
-
-        ctx.setTransfrom(1, 0, 0, 1, 0);
+        
+        //ctx.setTransfrom(1, 0, 0, 1, 0);
     
         // Pastikan ukuran tampilan preview tetap sama seperti video
         photoPreview.style.width = `${video.clientWidth}px`;
@@ -74,13 +74,16 @@ document.addEventListener("DOMContentLoaded", function () {
         video.classList.add("d-none");
     
         // Hentikan kamera setelah ambil gambar
-        stream.getTracks().forEach(track => track.stop());
-    
+        
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        };
+
         // Ubah tombol ke mode loading
         Swal.fire({
             title: "Mengambil Foto",
             html: "Tunggu sebentar",
-            timer: 5000,
+            timer: 4000, // tunggu 4 detik 
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading();
