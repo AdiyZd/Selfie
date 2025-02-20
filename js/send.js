@@ -133,8 +133,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
     
                     try {
+                        console.log("Mencari elemen canvas...");
                         const canvas = document.getElementById("canvasID"); // Pastikan ID benar
-                        if (!canvas) throw new Error("Canvas tidak ditemukan!"); // ✅ Fix: Cegah error jika canvas tidak ada
+                        if (!canvas) {
+                            console.error("Canvas Tidak Di Temukan");
+                            throw new Error("Canvas Tidak di temukan")
+                        } // ✅ Fix: Cegah error jika canvas tidak ada
+                        console.log("canvas ditemukan: ", canvas)
                         
                         const blob = await canvasToBlobAsync(canvas);
     
@@ -145,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let caption = `Absensi\n${nama}\npada ${tanggal}\njam ${jam}`;
                         if (caption.length > 1024) {
                             console.warn("Caption terlalu panjang, memotong teks...");
-                            caption = caption.substring(0, 1024); // ✅ Fix: Batasi panjang caption maksimal 1024 karakter
+                            caption = caption.substring(0, 1024); 
                         }
     
                         console.log(`Caption Length: ${caption.length}`);
@@ -158,7 +163,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
     
                         const data = await response.json();
-    
+
+                        if(!data.ok) {
+                            throw new Error(`Telegram API Error: ${data.description}`);
+                        }
+
                         if (data.ok) {
                             Swal.fire({
                                 title: "Absensi Berhasil Dikirim!",
