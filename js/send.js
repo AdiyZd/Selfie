@@ -101,6 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi kirim ke Telegram
     // Fungsi kirim ke Telegram dengan input nama sebelum mengirim
+    
+    // Fungsi kirim ke Telegram dengan input nama sebelum mengirim
 function sendAbsensiTelegram() {
     Swal.fire({
         title: "Masukkan Nama Anda",
@@ -120,45 +122,66 @@ function sendAbsensiTelegram() {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            const nama = result.value; // Nama yang diinput user
-            const telegramBotToken = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8"; // Ganti dengan token bot
-            const chatId = "7355777672"; // Ganti dengan chat ID
+            const nama = result.value; 
 
-            canvas.toBlob(function (blob) {
-                let formData = new FormData();
-                formData.append("chat_id", chatId);
-                formData.append("photo", blob, "absensi.jpg");
-                formData.append("caption", `Absensi: ${document.getElementById("tanggal").textContent}\nNama: ${nama}`);
+            // Animasi loading sebelum mengirim
+            let timerInterval;
+            Swal.fire({
+                title: "Mengirim Absensi...",
+                html: "Foto akan dikirim dalam <b></b> detik.",
+                timer: 4000, // Timer 4 detik
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft() / 1000}`; // Menampilkan waktu tersisa dalam detik
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then(() => {
+                // Kirim ke Telegram setelah loading selesai
+                const telegramBotToken = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8"; // Ganti dengan token bot
+                const chatId = "7355777672"; // Ganti dengan chat ID
 
-                fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        Swal.fire({
-                            title: "Absensi Berhasil Dikirim",
-                            icon: "success",
-                            draggable: true
-                        });
-                    } else {
+                canvas.toBlob(function (blob) {
+                    let formData = new FormData();
+                    formData.append("chat_id", chatId);
+                    formData.append("photo", blob, "absensi.jpg");
+                    formData.append("caption", `Absensi: ${document.getElementById("tanggal").textContent}\nNama: ${nama}`);
+
+                    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.ok) {
+                            Swal.fire({
+                                title: "Absensi Berhasil Dikirim",
+                                icon: "success",
+                                draggable: true
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error Silahkan Coba Lagi",
+                                text: "Gagal Mengirim Absensi Periksa Koneksi Anda!",
+                                footer: '<a href="#">Kenapa Ini Terjadi?</a>'
+                            });
+                        }
+                    })
+                    .catch(error => {
                         Swal.fire({
                             icon: "error",
-                            title: "Error Silahkan Coba Lagi",
-                            text: "Gagal Mengirim Absensi Periksa Koneksi Anda!",
-                            footer: '<a href="#">Kenapa Ini Terjadi?</a>'
+                            title: "Error",
+                            text: `Terjadi kesalahan: ${error}`
                         });
-                    }
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: `Terjadi kesalahan: ${error}`
                     });
-                });
-            }, "image/jpeg");
+                }, "image/jpeg");
+            });
         }
     });
 }
