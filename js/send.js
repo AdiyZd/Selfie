@@ -54,10 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.height = video.videoHeight;
     
         // Gambar video ke dalam canvas
+        ctx.save(); // simpan posisi awal lurr
         ctx.translate(canvas.width, 0)
         ctx.scale(-1, 1)
         
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.restore(); // kembalikan lagi ke posisi awal
         
         let dataURL = canvas.toDataURL("image/jpeg", 1.0);
         photoPreview.src = dataURL;
