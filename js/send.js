@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let formData = new FormData();
                         formData.append("chat_id", chatId);
                         formData.append("photo", blob, "Absensi.jpg");
-                        formData.append("caption", `Absensi: ${tanggal}\n Jam: ${jam}\n Nama: ${nama}`);
+                        formData.append("caption", `Absensi ${nama} pada ${tanggal} jam ${jam}`);
     
                         const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
                             method: "POST",
