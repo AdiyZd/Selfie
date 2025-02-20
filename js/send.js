@@ -1,6 +1,3 @@
-const { response, text } = require("express");
-const { Types } = require("twilio/lib/rest/content/v1/content");
-
 document.addEventListener("DOMContentLoaded", function () {
     updateTanggal()
     const openCamera = document.getElementById("openCamera");
@@ -31,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     facingMode: "user"
                 }
             });
-            video.srcObject = stream;
+            video.srcObject = stream; 
             video.classList.remove("d-none");
             sendAbsensi.classList.remove("d-none");
             sendAbsensi.innerHTML = "📸 Ambil Foto";
@@ -40,11 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Mencoba Mengacces Kamera");
             navigator.mediaDevices.getUserMedia({video: true})
             .then(stream => console.log("Kamera Berhasil Di Buka", stream))
-            .then((value) => console.log("Gagal Mengacces Kamera", error));
+            .catch((error) => console.log("Gagal Mengacces Kamera", error));
         } catch (error) {
             alert("Gagal mengakses kamera: " + error);
         }
-        
+
         console.log("Mencoba Mengacces Kamera");
         navigator.mediaDevices.getUserMedia({video: true})
         .then(stream => console.log("Kamera Berhasil Di Buka", stream))
@@ -204,15 +201,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }).then(response => response.json)
         .then(data => {
             if (data.ok) {
-                sendAdmin = `✅ Laporan Absensi Bulan ${bulanLalu.toLocaleString('id-ID', {month: 'long', year: 'numeric'})} Berhasil Di Kirim`;
+                let sendAdmin = `✅ Laporan Absensi Bulan ${bulanLalu.toLocaleString('id-ID', {month: 'long', year: 'numeric'})} Berhasil Di Kirim`;
             } else {
-                sendAdmin = `❌ Laporan Tidak Berhasil Di Kirim ${data.description}`;
+                let sendAdmin = `❌ Laporan Tidak Berhasil Di Kirim ${data.description}`;
             };
         
             // kirim api
             fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
                 method: "POST",
-                headers: { "Content-Type": "aplication/json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     chat_id: admin,
                     text: sendAdmin
@@ -221,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }).catch(error => {
             fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
                 method: "POST",
-                headers: { "Content-Type": "aplication/json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     chat_id: admin,
                     text: `❌ Laporan Tidak Berhasil Di Kirim ${error.message}`

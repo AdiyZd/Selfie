@@ -1,6 +1,6 @@
 function updateTanggal() {
     let tanggalEl = document.getElementById("tanggal");
-    let waktuEl = document.getElementById("waktu");
+    let waktuEl = document.getElementById("wkatu");
     let now = new Date();
 
     // Menentukan hari dan tanggal
