@@ -112,13 +112,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    Swal.alert({
+                    Swal.fire({
                         title: "Absensi Berhasil Di Kirim",
                         icon: "success",
                         draggable: true
                     });
                 } else {
-                    Swal.alert({
+                    Swal.fire({
                         icon: "error",
                         title: "Error Silahkan Coba Lagi",
                         text: "Gagal Mengirim Absensi Periksa Koneksi Anda!",
