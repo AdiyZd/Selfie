@@ -16,11 +16,11 @@ function updateTanggal() {
 
     // Menentukan waktu (Pagi, Siang, Sore, Malam)
     let waktu;
-    if (jam >= 5 && jam < 12) {
+    if (jam >= 5 && jam < 10 ) {
         waktu = "Pagi 🌅";
-    } else if (jam >= 12 && jam < 15) {
+    } else if (jam >= 10 && jam < 14) {
         waktu = "Siang ☀️";
-    } else if (jam >= 15 && jam < 18) {
+    } else if (jam >= 14 && jam < 18) {
         waktu = "Sore 🌆";
     } else {
         waktu = "Malam 🌙";
