@@ -92,18 +92,18 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmButtonText: "Kirim",
             showLoaderOnConfirm: true,
             preConfirm: async (nama) => {
-                const allowedNames = ["Nabila", "Anisa", "Lita", "adi", "Adi"];
+                const allowedNames = ["Nabila", "nabila", "anisa", "Anisa", "Lita", "adi", "Adi"];
                 if (!nama) return Swal.showValidationMessage("Nama tidak boleh kosong!");
                 if (!allowedNames.includes(nama)) return Swal.showValidationMessage("Nama Tidak Terdaftar Silahkan Hubungi Mas Pur!");
                 return nama;
             },
             allowOutsideClick: () => !Swal.isLoading()
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                const nama = result.value;
+                const nama = result.value.trim().substring(0, 50); // Hindari teks terlalu panjang
                 const now = new Date();
                 const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                const tanggal = document.getElementById("tanggal").textContent;
+                const tanggal = document.getElementById("tanggal").textContent.trim().substring(0, 50);
     
                 Swal.fire({
                     title: "Mengirim Absensi...",
@@ -114,9 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         Swal.showLoading();
                         const timer = Swal.getPopup().querySelector("b");
                         let timerInterval = setInterval(() => {
-                            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(1)}`;
+                            timer.textContent = `${Swal.getTimerLeft() / 1000}`;
                         }, 100);
-                    }
+                    },
+                    willClose: () => clearInterval(timerInterval)
                 }).then(async () => {
                     const telegramBotToken = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
                     const chatId = "7355777672";
@@ -128,11 +129,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
     
                     try {
-                        const blob = await canvasToBlobAsync(canvas); // Tunggu hasil blob
+                        const canvas = document.getElementById("canvasID"); // Pastikan ID benar
+                        const blob = await canvasToBlobAsync(canvas);
+    
                         let formData = new FormData();
                         formData.append("chat_id", chatId);
                         formData.append("photo", blob, "Absensi.jpg");
-                        formData.append("caption", `Absensi ${nama} pada ${tanggal} jam ${jam}`);
+    
+                        const caption = `Absensi\n ${nama}\n pada ${tanggal}\n jam ${jam}`;
+                        console.log(`Caption Length: ${caption.length}`);
+                        console.log(`Caption Content: ${caption}`);
+    
+                        if (caption.length > 100) {
+                            console.warn("Caption terlalu panjang, memotong teks...");
+                        }
+    
+                        formData.append("caption", caption.substring(0, 100));
     
                         const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
                             method: "POST",
@@ -147,8 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 icon: "success",
                                 draggable: true
                             });
-                            saveToExcel(nama, tanggal, jam, photoPreview.src); // Simpan jika tidak error
+                            saveToExcel(nama, tanggal, jam, photoPreview.src);
                         } else {
+                            console.error("Telegram API Error:", data);
                             Swal.fire({
                                 icon: "error",
                                 title: "Error Silahkan Coba Lagi",
@@ -156,10 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
                         }
                     } catch (error) {
+                        console.error("Error terjadi:", error);
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: `Terjadi kesalahan: ${error}`
+                            text: `Terjadi kesalahan: ${error.message}`
                         });
                     }
                 });
