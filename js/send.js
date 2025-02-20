@@ -1,3 +1,6 @@
+const { response, text } = require("express");
+const { Types } = require("twilio/lib/rest/content/v1/content");
+
 document.addEventListener("DOMContentLoaded", function () {
     const openCamera = document.getElementById("openCamera");
     const video = document.getElementById("cameraFeed");
@@ -171,5 +174,59 @@ document.addEventListener("DOMContentLoaded", function () {
         XLSX.utils.book_append_sheet(wb, ws, "Absensi");
 
         XLSX.writeFile(wb, fileName);
+    }
+
+    function sendDataExcelTele() {
+        const Token = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
+        const chatId = "7355777672";
+        const admin = "5560083488";
+
+        const bulanLalu = new Date();
+        bulanLalu.setMonth(bulanLalu.getMonth() -1 );
+        const namaFile = `Absensi_${bulanLalu.toLocaleString('id-ID', {month: 'Long', year: 'numeric'})}.xlsx`;
+
+        let formData = new FormData();
+        formData.append("chat_id", chatId);
+        formData.append("document", new File([new Blob([XLSX.write(absensiData, { type: 'array' })])], namaFile, { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+        formData.append("caption", `Laporan Absensi Bulan Lalu: ${namaFile}`);
+
+        fetch(`https://api.telegram.org/bot${Token}/sendDocument`, {
+            method: "POST",
+            body: formData
+        }).then(response => response.json)
+        .then(data => {
+            if (data.ok) {
+                sendAdmin = `✅ Laporan Absensi Bulan ${bulanLalu.toLocaleString('id-ID', {month: 'long', year: 'numeric'})} Berhasil Di Kirim`;
+            } else {
+                sendAdmin = `❌ Laporan Tidak Berhasil Di Kirim ${data.description}`;
+            };
+        
+            // kirim api
+            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "aplication/json" },
+                body: JSON.stringify({
+                    chat_id: admin,
+                    text: sendAdmin
+                })
+            })
+        }).catch(error => {
+            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "aplication/json" },
+                body: JSON.stringify({
+                    chat_id: admin,
+                    text: `❌ Laporan Tidak Berhasil Di Kirim ${error.message}`
+                })
+            })
+        })
+        
+        function cekDataTele() {
+            const now = new Date();
+            if (now.getDate() === 1) {
+                sendDataExcelTele();
+            }
+        }
+        setInterval(cekDataTele, 3600000)
     }
 });
