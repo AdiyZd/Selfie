@@ -1,0 +1,64 @@
+/* Default Light Mode */
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.h4 {
+    font-family: 'Grechen Fuemen', cursive;
+    font-weight: 800 !important;
+}
+
+#photoPreview {
+    width: 20em;
+    max-height: 300px;
+    height: 20em; /* Jaga aspek rasio */
+    border-radius: 10px;
+    margin-top: 10px;
+    object-fit: cover;
+}
+
+canvas {
+    display: none; /* Hindari tampil jika tidak perlu */
+    width: auto !important;
+    height: auto !important;
+}
+
+
+.btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+video, img {
+    width: 20em;
+    max-height: 300px;
+    height: 20em; /* Jaga aspek rasio */
+    border-radius: 10px;
+    margin-top: 10px;
+    object-fit: cover;
+}
+
+
+.d-none {
+    display: none;
+}
