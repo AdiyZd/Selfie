@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         formData.append("chat_id", chatId);
                         formData.append("photo", blob, "Absensi.jpg");
     
-                        let caption = `Absensi\n${nama}\npada ${tanggal}\njam ${jam}`;
+                        let caption = `ABSENSI SANDIKOMPUTER\n Nama: ${nama}\nTanggal: ${tanggal}\nJam: ${jam}`;
                         if (caption.length > 1024) {
                             console.warn("Caption terlalu panjang, memotong teks...");
                             caption = caption.substring(0, 1024); 
