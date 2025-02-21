@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
                     try {
                         console.log("Mencari elemen canvas...");
-                        const canvas = document.getElementById("canvasID"); // Pastikan ID benar
+                        const canvas = document.getElementById("photoCanvas"); // Pastikan ID benar
                         if (!canvas) {
                             console.error("Canvas Tidak Di Temukan");
                             throw new Error("Canvas Tidak di temukan")
