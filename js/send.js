@@ -164,6 +164,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
                         const data = await response.json();
 
+                        if (!response.ok) {
+                            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+                        }
+
                         if(!data.ok) {
                             throw new Error(`Telegram API Error: ${data.description}`);
                         }
@@ -182,20 +186,30 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.warn("Fungsi saveToExcel() tidak ditemukan!");
                             }
                         } else {
-                            console.error("Telegram API Error:", data);
+                            console.warn(`Peringatan: Telegram API mengembalikan error -> ${data.description}`)
                             Swal.fire({
-                                icon: "error",
-                                title: "Error Silahkan Coba Lagi",
-                                text: `Gagal Mengirim Absensi. Error: ${data.description || "Tidak diketahui"}`
+                                icon: "warning",
+                                title: "Absensi Berahsil Terkirim, Tapi Ada Kesalahan!",
+                                text: `Peringatan dari Telegram API: ${data.description}`
                             });
                         }
                     } catch (error) {
-                        console.error("Error terjadi:", error);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: `Terjadi kesalahan: ${error.message}`
-                        });
+                        // tampilkan di konsole error
+                        console.error(" Terjadi Error: ",error);
+                        // kondisi agar bias debugin dengan mudah
+                        if (error.message.includes("Failed to fetch") || error.message.includes("HTTP Error")){
+                            Swal.fire({
+                                icon: "error",
+                                title: "Koneksi Gagal",
+                                text: "Tidak dapat terhubung ke server Telegram. Periksa koneksi internet Anda."
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: `Terjadi Kesalahan: ${error.message}`
+                            });
+                        }
                     }
                 });
             }
