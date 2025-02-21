@@ -21,31 +21,95 @@ function cekLokasiSaya() {
                 let dalamLokasiAccess = BatasLokasiAccess.some(lokasi => hitungJarak(letak1, letak2, lokasi.lat, lokasi.lng) <= maxRadius);
 
                 if (dalamLokasiAccess) {
-                    document.getElementById("Hasil").innerText = `Lokasi1: ${letak1}\n Lokasi2: ${letak2}`;
+                    //document.getElementById("Hasil").innerText = `Lokasi1: ${letak1}\n Lokasi2: ${letak2}`;
+
+                    Swal.fire({
+                        title: "Lokasi Anda!",
+                        text: `Berada Di: ${letak1},${letak2}`,
+                        showClass: {
+                            popup: `
+                            animate__animated
+                            animate__fadeInUp
+                            animate__faster
+                            `
+                        },
+                        hidenClass: {
+                            popup: `
+                            animate__animated
+                            animate__fadeOutDown
+                            animate__faster
+                            `
+                        }
+                    })
+
                 } else {
-                    alert("Anda Berada Di Luar Area Yang Di Izinkan!!")
-                }
+                    Swal.fire({
+                        imageUrl: "../pic/icon/LokasiGedung.svg",
+                        title: "Di Luar Jangkauan!",
+                        text: "Anda Di Luar Jangkauan Perusahaan Silahak Masuk Ke Dalam Jangkauan!",
+                        imageWidth: 250,
+                        imageHeight: 150,
+                        imageAlt: "2D Lokasi"
+                    });
+
+                };
+
 
             }, 
             function (error) {
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        alert("Izin Lokasi Di Tolak!!");
+                        Swal.fire({
+                            imageUrl: "../pic/icon/Warning.svg",
+                            title: "Izin Lokasi Di Tolak",
+                            text: "Silahkan Izinkan DI Pengaturan!",
+                            imageWidth: 250,
+                            imageHeight: 150,
+                            imageAlt: "Izin Lokasi"
+                        });
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        alert("Informasi Lokasi Tidak Di Temuakn");
+                        Swal.fire({
+                            imageUrl: "../pic/icon/MencariLokasi.svg",
+                            title: "Lokasi Tidak Ditemukan",
+                            text: "Refresh Websaite!",
+                            imageWidth: 250,
+                            imageHeight: 150,
+                            imageAlt: "Tidak Ditemukan Lokasi"
+                        });
                         break;
                     case error.TIMEOUT:
-                        alert("Permintaan Lokasi Terlalu Lama");
+                        Swal.fire({
+                            imageUrl: "../pic/icon/SearchLokasi.svg",
+                            title: "Terlalu Lama Mencari Lokasi",
+                            text: "Periksa Koneksi Internet",
+                            imageWidth: 250,
+                            imageHeight: 150,
+                            imageAlt: "LoadLokasi Terlalu Lama!"
+                        });
                         break;
                     default:
-                        alert("Terjadi Kesalahan Yang Tidak Terduga!!!");
+                        Swal.fire({
+                            imageUrl: "../pic/icon/TidakDiketahui.svg",
+                            title: "Hubungi Maspur!",
+                            text: "Code Error Tidak Teduga!",
+                            imageWidth: 250,
+                            imageHeight: 150,
+                            imageAlt: "Error Tidak Diketahui!"
+                        })
                         break;
                 };
             }
         )
     } else {
-        alert("Get Lokasion Tidak Di Dukung Di Broser Ini!")
+        Swal.fire({
+            imageUrl: "../pic/icon/MasukBox.svg",
+            title: "Tidak Ada Dukungan",
+            text: "Get Lokasi Tidak Di Dukung Di Broser Ini!",
+            imageWidth: 250,
+            imageHeight: 150,
+            imageAlt: "Broser!"
+        })
     }
 };
 
