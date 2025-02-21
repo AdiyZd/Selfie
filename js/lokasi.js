@@ -27,7 +27,7 @@ function cekLokasiSaya() {
                     {lat: -6.949377, lng: 109.963358} // titik lokasi 4 -6.949377,109.963358
                 ];
 
-                let maxRadius = 100; // 100meter
+                let maxRadius = 10; // 10meter
 
                 let dalamLokasiAccess = BatasLokasiAccess.some(lokasi => hitungJarak(letak1, letak2, lokasi.lat, lokasi.lng) <= maxRadius);
 
