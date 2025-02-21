@@ -100,17 +100,17 @@ document.addEventListener("DOMContentLoaded", function () {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed) {
-                const nama = result.value.trim().substring(0, 50); // Hindari teks terlalu panjang
+                const nama = result.value.trim().substring(0, 50); 
                 const now = new Date();
                 const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const tanggal = document.getElementById("tanggal")?.textContent?.trim()?.substring(0, 50) || "Tanggal Tidak Ditemukan";
     
-                let timerInterval; // ✅ Fix: Deklarasikan timerInterval agar bisa digunakan di willClose()
+                let timerInterval; 
     
                 Swal.fire({
                     title: "Mengirim Absensi...",
                     html: "Foto akan dikirim dalam <b></b> detik.",
-                    timer: 4000,
+                    timer: 8000,
                     timerProgressBar: true,
                     didOpen: () => {
                         Swal.showLoading();
