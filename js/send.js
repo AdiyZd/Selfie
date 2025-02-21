@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
                     function canvasToBlobAsync(canvas) {
                         return new Promise((resolve) => {
-                            canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+                            canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.8);
                         });
                     }
     
@@ -163,6 +163,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
     
                         const data = await response.json();
+
+                        console.log("Response Telegram: ", data)
 
                         if (!response.ok) {
                             throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
