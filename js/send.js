@@ -220,6 +220,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     function saveToExcel(nama, tanggal, jam, fotoBase64) {
+
+        if (fotoBase64.length > 32767) {
+            console.warn("Memotong Text Agar Menghindari Error Di Data Excel...")
+            fotoBase64 = fotoBase64.substring(0, 32767)
+        }
+
         const bulanSekarang = new Date().toLocaleString('id-ID', { month: 'long', year: 'numeric' });
         const fileName = `Absensi_${bulanSekarang}.xlsx`;
 
@@ -232,61 +238,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Absensi");
-
         XLSX.writeFile(wb, fileName);
     }
 
-    function sendDataExcelTele() {
-        const Token = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
-        const chatId = "7355777672";
-        const admin = "5560083488";
+    async function sendDataExcelTele() {
+        try {
+            const now = Date();
+            if (now.getDate() !== 1) return;
 
-        const bulanLalu = new Date();
-        bulanLalu.setMonth(bulanLalu.getMonth() -1 );
-        const namaFile = `Absensi_${bulanLalu.toLocaleString('id-ID', {month: 'Long', year: 'numeric'})}.xlsx`;
+            const fileName = `Absensi_${now.toLocaleString('id-ID', { month: 'long', year: 'numeric' })}.xlsx`;
+            let wb = XLSX.utils.book_new();
+            let ws = XLSX.utils.aoa_to_sheet(absensiData);
+            XLSX.utils.book_append_sheet(wb, ws, "absensi");
 
-        let formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("document", new File([new Blob([XLSX.write(absensiData, { type: 'array' })])], namaFile, { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
-        formData.append("caption", `Laporan Absensi Bulan Lalu: ${namaFile}`);
+            let fileBlob = new Blob([XLSX.write(wb, { type: 'array' })], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+            let file = new File([fileBlob], fileName);
 
-        fetch(`https://api.telegram.org/bot${Token}/sendDocument`, {
-            method: "POST",
-            body: formData
-        }).then(response => response.json)
-        .then(data => {
-            if (data.ok) {
-                let sendAdmin = `✅ Laporan Absensi Bulan ${bulanLalu.toLocaleString('id-ID', {month: 'long', year: 'numeric'})} Berhasil Di Kirim`;
-            } else {
-                let sendAdmin = `❌ Laporan Tidak Berhasil Di Kirim ${data.description}`;
-            };
-        
-            // kirim api
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+            let formData = new FormData();
+            formData.append("chat_id", "7355777672");
+            formData.append("document", file);
+            formData.append("Caption", `Laporan Absensi: ${fileName}`);
+
+            const API = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8"
+            const response = await fetch(`https://api.telegram.org/${API}/sendDocument`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: admin,
-                    text: sendAdmin
-                })
-            })
-        }).catch(error => {
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: admin,
-                    text: `❌ Laporan Tidak Berhasil Di Kirim ${error.message}`
-                })
-            })
-        })
-        
-        function cekDataTele() {
-            const now = new Date();
-            if (now.getDate() === 1) {
-                sendDataExcelTele();
-            }
+                body: formData
+            });
+
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.description);
+            
+            console.log("Laporan Absensi Berhasil Di Kirim");
+        } catch(error) {
+            console.warn("Laporan Tidak Terkirim!! Error: ", error)       
         }
-        setInterval(cekDataTele, 3600000)
     }
+    setInterval(sendDataExcelTele, 3600000)
 });
