@@ -4,6 +4,17 @@ document.getElementById("lokasi").addEventListener("click", function() {
 
 function cekLokasiSaya() {
     if ("geolocation" in navigator) {
+        // Kasih Loading Agar Gk Di Sepam!
+
+        Swal.fire({
+            title: "Mencari Lokasi!",
+            text: "Mohon Tunggu Sebentar!",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        })
+
         navigator.geolocation.getCurrentPosition(
             function (position) {
                 let letak1 = position.coords.latitude;
@@ -21,7 +32,8 @@ function cekLokasiSaya() {
                 let dalamLokasiAccess = BatasLokasiAccess.some(lokasi => hitungJarak(letak1, letak2, lokasi.lat, lokasi.lng) <= maxRadius);
 
                 if (dalamLokasiAccess) {
-                    //document.getElementById("Hasil").innerText = `Lokasi1: ${letak1}\n Lokasi2: ${letak2}`;
+                    //document.getElementById("Hasil").innerText = `Lokasi1: ${letak1}\n Lokasi2: ${letak2}`
+                    Swal.close(); // tutup setelah lokasi ditemukan
 
                     Swal.fire({
                         title: "Lokasi Anda!",
@@ -124,5 +136,5 @@ function hitungJarak(lat1, lon1, lat2, lon2) {
     const a = Math.sin(pi / 2) * Math.sin(pi / 2) + Math.cos(q1) * Math.cos(q2) * Math.sin(pi2 / 2) * Math.sin(pi2 / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return R * c;
+    return R * c; // hasil hitungan dalam bentuk meter
 }
