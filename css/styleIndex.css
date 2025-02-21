@@ -67,6 +67,7 @@ video, img {
 }
 
 
-.d-none {
-    display: none;
+#photoCanvas {
+    visibility: hidden;
+    position: absolute;
 }
