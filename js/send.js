@@ -169,17 +169,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     facingMode: "user"
                 }
             });
+            
+            console.log("streal kamera", stream)
 
             video.srcObject = stream;
             video.classList.remove("d-none");
+            
+            video.onloadedmetadata = () => {
+                console.log("Medavidio Telah Dimulai");
+                video.play();
+            }
+            
             sendAbsensi.classList.remove('d-none');
             sendAbsensi.innerHTML = "📸 Ambil Foto";
             sendAbsensi.onclick = capturePhoto;
 
         } catch (error) {
+            console.error("Gagal mengaccess kamera: ", error)
             Swal.fire({
                 title: "Kesalahan!",
-                text: `Gagal mengaccess kamera: ${error}`,
+                text: `Gagal mengaccess kamera: ${error.message}`,
                 icon: "error"
             });
         }
