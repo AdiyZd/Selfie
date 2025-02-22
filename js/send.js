@@ -179,8 +179,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Medavidio Telah Dimulai");
                 video.play().then(() => {
                     console.log("Vidio Berhasil Diputar!");
-                }).catch(Error => {
-                    console.error(`Gagal memutar vidio ${Error}`);
+                }).catch(Err => {
+                    console.error(`Gagal memutar vidio ${Err}`);
                 });
             };
             
