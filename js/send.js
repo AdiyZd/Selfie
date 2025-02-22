@@ -1,5 +1,3 @@
-const { text } = require("express");
-
 document.addEventListener("DOMContentLoaded", function () {
     updateTanggal()
     const openCamera = document.getElementById("openCamera");
