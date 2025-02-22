@@ -171,10 +171,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             
             console.log("streal kamera", stream)
-
+            
+            if (!video) {
+                console.error("element vidio tidak ditemukan!");
+                return;
+            }
+            
             video.srcObject = stream;
             video.classList.remove("d-none");
-            
+
             video.onloadedmetadata = () => {
                 console.log("Medavidio Telah Dimulai");
                 video.play().then(() => {
