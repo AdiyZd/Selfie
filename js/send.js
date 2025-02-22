@@ -19,12 +19,27 @@ document.addEventListener("DOMContentLoaded", function () {
         let tahun = now.getFullYear();
     }
 
-
-
-    openCamera.addEventListener("click", async function () {
-        if (await cekLokasiSaya()) {
-            await StartKamera();
-        };
+    if (openCamera) {
+        openCamera.addEventListener('click', async function(){
+            try {
+                if (await cekLokasiSaya()) {
+                    await StartKamera();
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lokasi tidak diizinkan!",
+                        text: "Periksa perizinan lokasi!"
+                    });
+                };
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan: ", error
+                })
+            }
+        })
+    }
         
     });
 
