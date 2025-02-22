@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             }).then(() => {
                                 Swal.fire({
                                     imageUrl: "../pic/icon/LokasiTepat.svg",
-                                    imageWidth: 250,
-                                    imageHeight: 150,
+                                    imageWidth: 280,
+                                    imageHeight: 180,
                                     title: "Lokasi Valid",
                                     text: "Apakah Anda Ingin Lanjut Absensi?",
                                     showCancelButton: true,
@@ -87,8 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         } else {
                             Swal.fire({
                                 imageUrl: "../pic/icon/LokasiGedung.svg",
-                                imageWidth: 250,
-                                imageHeight: 150,
+                                imageWidth: 280,
+                                imageHeight: 180,
                                 text: "Di Luar Lokasi!",
                                 imageAlt: "Lokasi Gedung"
                             });
@@ -104,8 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Belum Di Izinkan!",
                                     text: "Silahkan Izinkan Access Lokasi Anda!",
                                     imageUrl: "../pic/icon/Waning.svg",
-                                    imageWidth: 250,
-                                    imageHeight: 150,
+                                    imageWidth: 280,
+                                    imageHeight: 180,
                                     imageAlt: "Izin Lokasi"
                                 });
                                 break;
@@ -115,8 +115,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Tidak Ditemuakn!",
                                     text: "Silahkan refresh halaman!",
                                     imageUrl: "../pic/icon/LokasiAnda.svg",
-                                    imageHeight: 250,
-                                    imageWidth: 150,
+                                    imageHeight: 280,
+                                    imageWidth: 180,
                                     imageAlt: "Lokasi Tidak Ditemuakn!"
                                 });
                                 break;
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Koneksi Teganggu",
                                     text: "Silahkan koneksikan jaringan yang cepat!",
                                     imageUrl: "../pic/icon/ServerError.svg",
-                                    imageHeight: 250,
-                                    imageWidth: 150,
+                                    imageHeight: 280,
+                                    imageWidth: 180,
                                     imageAlt: "Koneksi Terganggu!"
                                 })
                                 break;

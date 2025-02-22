@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestAlret</title>
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("tes").addEventListener("click", function() {
+                Swal.fire({
+                    title: "Welcome",
+                    imageUrl: "../../pic/icon/CekLokasi.svg",
+                    imageHeight: 280,
+                    imageWidth: 180,
+                    imageAlt: "testing saja"
+                });
+        })
+        })
+    </script>
+    <button id="tes">Klick saya</button>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
