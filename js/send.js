@@ -182,13 +182,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
             video.onloadedmetadata = () => {
                 console.log("Medavidio Telah Dimulai");
-                video.play().then(() => {
-                    console.log("Vidio Berhasil Diputar!");
-                }).catch(Err => {
-                    console.error(`Gagal memutar vidio ${Err}`);
-                });
+                
+                setTimeout(() => {
+                    video.play().then(() => {
+                        console.log("Vido berhasil diputar.");
+                    }).catch(Err => {
+                        console.error(`Gagal memuat vidio: ${Err}`);
+                    });
+                }, 500)
             };
             
+            setTimeout(() => {
+                if (video.videoWidth === 0 || video.videoWidth === 0) {
+                    console.error(" Kamera tidak mengeluarkan gambar! ");
+                    Swal.fire({
+                        title: "Kesalahan",
+                        text: "Kamera aktif tapi tidak mengeluarkan gambar. Coba refresh websaite!",
+                        icon: "error"
+                    });
+                };
+            }, 2000); // set watu 2detik agar bisa loading
+
             sendAbsensi.classList.remove('d-none');
             sendAbsensi.innerHTML = "📸 Ambil Foto";
             sendAbsensi.onclick = capturePhoto;
@@ -227,9 +241,9 @@ document.addEventListener("DOMContentLoaded", function () {
         photoPreview.classList.remove("d-none");
         video.classList.add("d-none");
 
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
+        // if (stream) {
+        //     stream.getTracks().forEach(track => track.stop());
+        // }
 
         Swal.fire({
             title: "Mengambil Foto",
@@ -241,6 +255,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendAbsensi.innerHTML = "📤 Kirim Absensi";
                 sendAbsensi.disabled = false;
                 sendAbsensi.onclick = sendAbsensiTelegram;
+                
+                StartKamera();
             }
         });
     }
