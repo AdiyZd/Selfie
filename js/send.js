@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let tahun = now.getFullYear();
     }
 
+
+
     openCamera.addEventListener("click", async function () {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -41,10 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Mencoba Mengacces Kamera");
         navigator.mediaDevices.getUserMedia({video: true})
         //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
-        .then((value) => console.log("Gagal Mengacces Kamera", error));        
+        .then((value) => console.log("Gagal Mengacces Kamera", value));        
     });
 
-    
 
     function capturePhoto() {
         const ctx = canvas.getContext("2d");
@@ -102,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.isConfirmed) {
                 const nama = result.value.trim().substring(0, 50); 
                 const now = new Date();
-                const jam = now.toLocaleTi
-                meString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const tanggal = document.getElementById("tanggal")?.textContent?.trim()?.substring(0, 50) || "Tanggal Tidak Ditemukan";
     
                 let timerInterval; 
