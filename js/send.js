@@ -177,8 +177,12 @@ document.addEventListener("DOMContentLoaded", function () {
             
             video.onloadedmetadata = () => {
                 console.log("Medavidio Telah Dimulai");
-                video.play();
-            }
+                video.play().then(() => {
+                    console.log("Vidio Berhasil Diputar!");
+                }).catch(Error => {
+                    console.error(`Gagal memutar vidio ${Error}`);
+                });
+            };
             
             sendAbsensi.classList.remove('d-none');
             sendAbsensi.innerHTML = "📸 Ambil Foto";
