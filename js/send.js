@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             }).then(() => {
                                 Swal.fire({
                                     imageUrl: "../pic/icon/LokasiTepat.svg",
-                                    imageWidth: 280,
-                                    imageHeight: 180,
+                                    imageWidth: 350,
+                                    imageHeight: 225,
                                     title: "Lokasi Valid",
                                     text: "Apakah Anda Ingin Lanjut Absensi?",
                                     showCancelButton: true,
@@ -87,8 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         } else {
                             Swal.fire({
                                 imageUrl: "../pic/icon/LokasiGedung.svg",
-                                imageWidth: 280,
-                                imageHeight: 180,
+                                imageWidth: 300,
+                                imageHeight: 250,
                                 text: "Di Luar Lokasi!",
                                 imageAlt: "Lokasi Gedung"
                             });
@@ -104,8 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Belum Di Izinkan!",
                                     text: "Silahkan Izinkan Access Lokasi Anda!",
                                     imageUrl: "../pic/icon/Waning.svg",
-                                    imageWidth: 280,
-                                    imageHeight: 180,
+                                    imageWidth: 300,
+                                    imageHeight: 225,
                                     imageAlt: "Izin Lokasi"
                                 });
                                 break;
