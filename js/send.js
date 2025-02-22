@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     confirmButtonText: "Lanjut Absen",
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        setTimeout(() => capturePhoto(), 100);
+                                        setTimeout(() => StartKamera(), 100);
                                     }
                                 });
                             });
