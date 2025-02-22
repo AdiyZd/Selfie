@@ -241,9 +241,9 @@ document.addEventListener("DOMContentLoaded", function () {
         photoPreview.classList.remove("d-none");
         video.classList.add("d-none");
 
-        // if (stream) {
-        //     stream.getTracks().forEach(track => track.stop());
-        // }
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
 
         Swal.fire({
             title: "Mengambil Foto",
@@ -255,8 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendAbsensi.innerHTML = "📤 Kirim Absensi";
                 sendAbsensi.disabled = false;
                 sendAbsensi.onclick = sendAbsensiTelegram;
-                
-                StartKamera();
             }
         });
     }
