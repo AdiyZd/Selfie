@@ -71,3 +71,20 @@ video, img {
     visibility: hidden;
     position: absolute;
 }
+
+
+/* ALRET IMG */
+
+.Swal-image-responsive {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+}
+
+/* HP GUWEHH */
+
+@media (max-width: 412px) {
+        .Swal-image-responsive {
+            max-width: 180px;
+        }
+}

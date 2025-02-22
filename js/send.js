@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     openCamera.addEventListener("click", async function () {
         if (await cekLokasiSaya()) {
-            capturePhoto();
+            await StartKamera();
         };
         
     });
@@ -70,8 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             }).then(() => {
                                 Swal.fire({
                                     imageUrl: "../pic/icon/LokasiTepat.svg",
-                                    imageWidth: 350,
-                                    imageHeight: 225,
+                                    customClass: {
+                                        image: "Swal-image-responsive"
+                                    },
                                     title: "Lokasi Valid",
                                     text: "Apakah Anda Ingin Lanjut Absensi?",
                                     showCancelButton: true,
@@ -87,10 +88,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         } else {
                             Swal.fire({
                                 imageUrl: "../pic/icon/LokasiGedung.svg",
-                                imageWidth: 300,
-                                imageHeight: 250,
                                 text: "Di Luar Lokasi!",
-                                imageAlt: "Lokasi Gedung"
+                                imageAlt: "Lokasi Gedung",
+                                customClass: {
+                                    image: "Swal-image-responsive"
+                                }
                             });
                         }
 
@@ -104,9 +106,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Belum Di Izinkan!",
                                     text: "Silahkan Izinkan Access Lokasi Anda!",
                                     imageUrl: "../pic/icon/Waning.svg",
-                                    imageWidth: 300,
-                                    imageHeight: 225,
-                                    imageAlt: "Izin Lokasi"
+                                    imageAlt: "Izin Lokasi",
+                                    customClass: {
+                                        image: "Swal-image-responsive"
+                                    }
                                 });
                                 break;
                             // kondisi kedua 
@@ -115,9 +118,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Tidak Ditemuakn!",
                                     text: "Silahkan refresh halaman!",
                                     imageUrl: "../pic/icon/LokasiAnda.svg",
-                                    imageHeight: 300,
-                                    imageWidth: 225,
-                                    imageAlt: "Lokasi Tidak Ditemuakn!"
+                                    imageAlt: "Lokasi Tidak Ditemuakn!",
+                                    customClass: {
+                                        image: "Swal-image-responsive"
+                                    }
                                 });
                                 break;
                             // Kondisi kedua
@@ -126,9 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Koneksi Teganggu",
                                     text: "Silahkan koneksikan jaringan yang cepat!",
                                     imageUrl: "../pic/icon/ServerError.svg",
-                                    imageHeight: 300,
-                                    imageWidth: 225,
-                                    imageAlt: "Koneksi Terganggu!"
+                                    imageAlt: "Koneksi Terganggu!",
+                                    customClass: {
+                                        image: "Swal-image-responsive"
+                                    }
                                 })
                                 break;
                             // Kondisi Awal atau (Default)
