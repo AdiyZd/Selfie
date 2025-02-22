@@ -160,6 +160,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    async function StartKamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 }, // kualitas tangkapan gambar
+                    height: { ideal: 720 },
+                    facingMode: "user"
+                }
+            });
+
+            video.srcObject = stream;
+            video.classList.remove("d-none");
+            sendAbsensi.classList.remove('d-none');
+            sendAbsensi.innerHTML = "📸 Ambil Foto";
+            sendAbsensi.onclick = capturePhoto;
+
+        } catch (error) {
+            Swal.fire({
+                title: "Kesalahan!",
+                text: `Gagal mengaccess kamera: ${error}`,
+                icon: "error"
+            });
+        }
+    }
+
     console.log("Mencoba Mengacces Kamera");
     navigator.mediaDevices.getUserMedia({video: true})
     //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
