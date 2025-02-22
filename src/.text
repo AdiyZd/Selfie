@@ -49,3 +49,34 @@ const Token = "7079092015:AAFOhQM0L0PGWmKcfW2DULtjo0KHzBEHbz8";
             }
         }
         setInterval(cekDataTele, 3600000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    facingMode: "user"
+                }
+            });
+            video.srcObject = stream; 
+            video.classList.remove("d-none");
+            sendAbsensi.classList.remove("d-none");
+            sendAbsensi.innerHTML = "📸 Ambil Foto";
+            sendAbsensi.onclick = capturePhoto;
+            
+        } catch (error) {
+            alert("Gagal mengakses kamera: " + error);
+        }
+    

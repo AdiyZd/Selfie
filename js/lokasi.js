@@ -134,8 +134,9 @@ function hitungJarak(lat1, lon1, lat2, lon2) {
     
     const a = Math.sin(pi / 2) * Math.sin(pi / 2) +
              Math.cos(q1) * Math.cos(q2) *
-             Math.sin(pi2 / 22) * Math.sin(pi2 / 2);
+             Math.sin(pi2 / 2) * Math.sin(pi2 / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c; // hasil hitungan dalam bentuk meter
 }
+

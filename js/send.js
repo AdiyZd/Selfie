@@ -1,3 +1,5 @@
+const { text } = require("express");
+
 document.addEventListener("DOMContentLoaded", function () {
     updateTanggal()
     const openCamera = document.getElementById("openCamera");
@@ -22,30 +24,149 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     openCamera.addEventListener("click", async function () {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    facingMode: "user"
-                }
-            });
-            video.srcObject = stream; 
-            video.classList.remove("d-none");
-            sendAbsensi.classList.remove("d-none");
-            sendAbsensi.innerHTML = "📸 Ambil Foto";
-            sendAbsensi.onclick = capturePhoto;
-            
-        } catch (error) {
-            alert("Gagal mengakses kamera: " + error);
-        }
-
-        console.log("Mencoba Mengacces Kamera");
-        navigator.mediaDevices.getUserMedia({video: true})
-        //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
-        .then((value) => console.log("Gagal Mengacces Kamera", value));        
+        if (await cekLokasiSaya()) {
+            capturePhoto();
+        };
+        
     });
 
+    async function cekLokasiSaya() {
+        return new Promise((resolve, reject) => {
+            if ("geolocation" in navigator) {
+                Swal.fire({
+                    title: "Mencari Lokasi",
+                    text: "Mohon tunggu Sebentar",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        let letak1 = position.coords.latitude,
+                            letak2 = position.coords.longitude;
+
+                        let BatasLokasiAccess =[
+                            {lat: -6.970966, lng: 110.018771}, // titik lokasi 1. -6.970966,110.018771
+                            {lat: -6.970846, lng: 110.018782}, // titik lokasi 2. -6.970846,110.018782
+                            {lat: -6.970838, lng: 110.018688}, // titik lokasi 3. -6.970838,110.018688
+                            {lat: -6.970983, lng: 110.018697}  // titik lokasi 4. -6.970983,110.018697
+                        ];
+
+                        let maxRadius = 5; // 5 meter
+                        let dalamLokasiAccess = BatasLokasiAccess.some(openCamera => 
+                            hitungJarak(letak1, letak2, openCamera.lat, openCamera.lng) <= maxRadius
+                        );
+
+                        Swal.close();
+
+                        if (dalamLokasiAccess) {
+                            Swal.fire({
+                                imageUrl: "../pic/icon/LokasiTepat.svg",
+                                imageWidth: 250,
+                                imageHeight: 150,
+                                title: "Lokasi Valid",
+                                text: "Apakah Anda Ingin Lanjut Absensi?",
+                                showCancelButton: true,
+                                confirmButtonColor: "3085d6",
+                                cancelButtonColor: "d33",
+                                confirmButtonText: "Lanjut Absen",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire({
+                                        title: "Menyiapkan Kamera!",
+                                        text: "Harap Tunggu Sebentar!",
+                                        allowOutsideClick: false,
+                                        didOpen: () => Swal.isLoading(),
+                                        timer: 3000,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        capturePhoto();
+                                    });
+                                };
+                            });
+                        } else {
+                            resolve(false);
+                            Swal.fire({
+                                imageUrl: '../icon/LokasiGedung.svg',
+                                imageWidth: 250,
+                                imageHeight: 150,
+                                text: "Di Luar Lokasi!",
+                                imageAlt: "Lokasi Gedung"
+                            });
+                        }
+
+                    },
+                    function (error) {
+                        let errorMsg;
+
+                        switch (errorMsg) {
+                            case error.PERMISSION_DENIED:
+                                Swal.fire({
+                                    title: "Lokasi Belum Di Izinkan!",
+                                    text: "Silahkan Izinkan Access Lokasi Anda!",
+                                    imageUrl: "../pic/icon/Waning.svg",
+                                    imageWidth: 250,
+                                    imageHeight: 150,
+                                    imageAlt: "Izin Lokasi"
+                                });
+                                break;
+                            // kondisi kedua 
+                            case error.POSITION_UNAVAILABLE:
+                                Swal.fire({
+                                    title: "Lokasi Tidak Ditemuakn!",
+                                    text: "Silahkan refresh halaman!",
+                                    imageUrl: "../pic/icon/LokasiAnda.svg",
+                                    imageHeight: 250,
+                                    imageWidth: 150,
+                                    imageAlt: "Lokasi Tidak Ditemuakn!"
+                                });
+                                break;
+                            // Kondisi kedua
+                            case error.TIMEOUT:
+                                Swal.fire({
+                                    title: "Koneksi Teganggu",
+                                    text: "Silahkan koneksikan jaringan yang cepat!",
+                                    imageUrl: "../pic/icon/ServerError.svg",
+                                    imageHeight: 250,
+                                    imageWidth: 150,
+                                    imageAlt: "Koneksi Terganggu!"
+                                })
+                                break;
+                            // Kondisi Awal atau (Default)
+                            default:
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Terjadi Kesalah Tidak Terduga!",
+                                    text: "Silahkan hubungi pembuat situs!"
+                                });
+                        }
+
+                        Swal.fire({
+                            title: "Kesalahan Lokasi!",
+                            text: errorMsg,
+                            icon: "error"
+                        });
+
+                        resolve(false);
+                    }
+                );
+            } else {
+                Swal.fire({
+                    title: "Broser tidak mendukung lokasi!",
+                    text: "Geolocation tidak di dukung di broser ini!",
+                    icon: "warning"
+                });
+                resolve(false);
+            }
+        });
+    }
+
+    console.log("Mencoba Mengacces Kamera");
+    navigator.mediaDevices.getUserMedia({video: true})
+    //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
+    .then((value) => console.log("Gagal Mengacces Kamera", value));
 
     function capturePhoto() {
         const ctx = canvas.getContext("2d");
@@ -82,6 +203,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendAbsensi.onclick = sendAbsensiTelegram;
             }
         });
+    }
+
+    function hitungJarak(lat1, lon1, lat2, lon2) {
+        const R = 6371e3; // radius bumi dalam meter
+        const q1 = lat1 * Math.PI / 180;
+        const q2 = lat2 * Math.PI / 180;
+        const pi = (lat2 - lat1) * Math.PI / 180;
+        const pi2 = (lon2 - lon1) * Math.PI / 180;
+        
+        const a = Math.sin(pi / 2) * Math.sin(pi / 2) +
+                 Math.cos(q1) * Math.cos(q2) *
+                 Math.sin(pi2 / 2) * Math.sin(pi2 / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+        return R * c; // hasil hitungan dalam bentuk meter
     }
 
     async function sendAbsensiTelegram() {
