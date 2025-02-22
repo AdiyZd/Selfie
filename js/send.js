@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     confirmButtonText: "Lanjut Absen",
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        capturePhoto();
+                                        setTimeout(() => capturePhoto(), 100);
                                     }
                                 });
                             });
@@ -96,9 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     },
                     function (error) {
-                        let errorMsg;
+                        let errorCode;
 
-                        switch (errorMsg) {
+                        switch (errorCode) {
                             case error.PERMISSION_DENIED:
                                 Swal.fire({
                                     title: "Lokasi Belum Di Izinkan!",
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         Swal.fire({
                             title: "Kesalahan Lokasi!",
-                            text: errorMsg,
+                            text: errorCode,
                             icon: "error"
                         });
 
