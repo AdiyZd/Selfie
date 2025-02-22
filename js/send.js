@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
             }
         })
-    }
+    };
 
     async function cekLokasiSaya() {
         return new Promise((resolve, reject) => {
@@ -303,21 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendAbsensi.onclick = sendAbsensiTelegram;
             }
         });
-    }
-
-    function hitungJarak(lat1, lon1, lat2, lon2) {
-        const R = 6371e3; // radius bumi dalam meter
-        const q1 = lat1 * Math.PI / 180;
-        const q2 = lat2 * Math.PI / 180;
-        const pi = (lat2 - lat1) * Math.PI / 180;
-        const pi2 = (lon2 - lon1) * Math.PI / 180;
-        
-        const a = Math.sin(pi / 2) * Math.sin(pi / 2) +
-                 Math.cos(q1) * Math.cos(q2) *
-                 Math.sin(pi2 / 2) * Math.sin(pi2 / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    
-        return R * c; // hasil hitungan dalam bentuk meter
     }
 
     async function sendAbsensiTelegram() {
