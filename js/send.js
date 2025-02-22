@@ -46,10 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             letak2 = position.coords.longitude;
 
                         let BatasLokasiAccess =[
-                            {lat: -6.970946, lng: 110.018758}, // titik lokasi 1. -6.970946,110.018758
-                            {lat: -6.970872, lng: 110.018765}, // titik lokasi 2. -6.970872,110.018765
-                            {lat: -6.970860, lng: 110.018706}, // titik lokasi 3. -6.970860,110.018706
-                            {lat: -6.970945, lng: 110.018698}  // titik lokasi 4. -6.970945,110.018698
+                            {lat: -6.970946, lng: 110.018758}, // titik batas lokasi yang di izinkan 1. -6.970946,110.018758
+                            {lat: -6.970872, lng: 110.018765}, // titik batas lokasi yang di izinkan 2. -6.970872,110.018765
+                            {lat: -6.970860, lng: 110.018706}, // titik batas lokasi yang di izinkan 3. -6.970860,110.018706
+                            {lat: -6.970945, lng: 110.018698}  // titik batas lokasi yang di izinkan 4. -6.970945,110.018698
                         ];
 
                         let maxRadius = 5; // 5 meter
