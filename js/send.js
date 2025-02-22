@@ -1,5 +1,3 @@
-const { text } = require("express");
-
 document.addEventListener("DOMContentLoaded", function () {
     updateTanggal()
     const openCamera = document.getElementById("openCamera");
@@ -63,33 +61,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         if (dalamLokasiAccess) {
                             Swal.fire({
-                                imageUrl: "../pic/icon/LokasiTepat.svg",
-                                imageWidth: 250,
-                                imageHeight: 150,
-                                title: "Lokasi Valid",
-                                text: "Apakah Anda Ingin Lanjut Absensi?",
-                                showCancelButton: true,
-                                confirmButtonColor: "3085d6",
-                                cancelButtonColor: "d33",
-                                confirmButtonText: "Lanjut Absen",
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                        title: "Menyiapkan Kamera!",
-                                        text: "Harap Tunggu Sebentar!",
-                                        allowOutsideClick: false,
-                                        didOpen: () => Swal.isLoading(),
-                                        timer: 3000,
-                                        timerProgressBar: true
-                                    }).then(() => {
+                                title: "Menyiapkan Kamera!",
+                                text: "Harap Tunggu Sebentar!",
+                                allowOutsideClick: false,
+                                didOpen: () => Swal.showLoading(),
+                                timer: 3000,
+                                timerProgressBar: true
+                            }).then(() => {
+                                Swal.fire({
+                                    imageUrl: "../pic/icon/LokasiTepat.svg",
+                                    imageWidth: 250,
+                                    imageHeight: 150,
+                                    title: "Lokasi Valid",
+                                    text: "Apakah Anda Ingin Lanjut Absensi?",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Lanjut Absen",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
                                         capturePhoto();
-                                    });
-                                };
+                                    }
+                                });
                             });
                         } else {
-                            resolve(false);
                             Swal.fire({
-                                imageUrl: '../icon/LokasiGedung.svg',
+                                imageUrl: "../pic/icon/LokasiGedung.svg",
                                 imageWidth: 250,
                                 imageHeight: 150,
                                 text: "Di Luar Lokasi!",
