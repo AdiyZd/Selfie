@@ -1,3 +1,5 @@
+const { text } = require("express");
+
 document.addEventListener("DOMContentLoaded", function () {
     updateTanggal()
     const openCamera = document.getElementById("openCamera");
@@ -41,66 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        let letak1 = position.coords.latitude,
-                            letak2 = position.coords.longitude;
-
-                        let BatasLokasiAccess =[
-                            {lat: -6.970946, lng: 110.018758}, // titik batas lokasi yang di izinkan 1. -6.970946,110.018758
-                            {lat: -6.970872, lng: 110.018765}, // titik batas lokasi yang di izinkan 2. -6.970872,110.018765
-                            {lat: -6.970860, lng: 110.018706}, // titik batas lokasi yang di izinkan 3. -6.970860,110.018706
-                            {lat: -6.970945, lng: 110.018698}  // titik batas lokasi yang di izinkan 4. -6.970945,110.018698
-                        ];
-
-                        let maxRadius = 5; // 5 meter
-                        let dalamLokasiAccess = BatasLokasiAccess.some(openCamera => 
-                            hitungJarak(letak1, letak2, openCamera.lat, openCamera.lng) <= maxRadius
-                        );
-
-                        Swal.close();
-
-                        if (dalamLokasiAccess) {
-                            Swal.fire({
-                                title: "Menyiapkan Kamera!",
-                                text: "Harap Tunggu Sebentar!",
-                                allowOutsideClick: false,
-                                didOpen: () => Swal.showLoading(),
-                                timer: 3000,
-                                timerProgressBar: true
-                            }).then(() => {
-                                Swal.fire({
-                                    imageUrl: "../pic/icon/LokasiTepat.svg",
-                                    customClass: {
-                                        image: "Swal-image-responsive"
-                                    },
-                                    title: "Lokasi Valid",
-                                    text: "Apakah Anda Ingin Lanjut Absensi?",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#3085d6",
-                                    cancelButtonColor: "#d33",
-                                    confirmButtonText: "Lanjut Absen",
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        StartKamera();
-                                    }
-                                });
-                            });
-                        } else {
-                            Swal.fire({
-                                imageUrl: "../pic/icon/LokasiGedung.svg",
-                                text: "Di Luar Lokasi!",
-                                imageAlt: "Lokasi Gedung",
-                                customClass: {
-                                    image: "Swal-image-responsive"
-                                }
-                            });
-                        }
-
+                    async function (position) {
+                        await posisiAnda(position);
+                        resolve(true);
                     },
-                    function (error) {
-                        let errorCode;
 
-                        switch (errorCode) {
+                    function(error) {
+                        let errorMessage;
+                        switch (error.code) {
                             case error.PERMISSION_DENIED:
                                 Swal.fire({
                                     title: "Lokasi Belum Di Izinkan!",
@@ -112,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     }
                                 });
                                 break;
+                            
                             // kondisi kedua 
                             case error.POSITION_UNAVAILABLE:
                                 Swal.fire({
@@ -124,7 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     }
                                 });
                                 break;
-                            // Kondisi kedua
+                            
+                            // kondisi ke 3
                             case error.TIMEOUT:
                                 Swal.fire({
                                     title: "Koneksi Teganggu",
@@ -134,9 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     customClass: {
                                         image: "Swal-image-responsive"
                                     }
-                                })
+                                });
                                 break;
-                            // Kondisi Awal atau (Default)
+
+                            // Default 
                             default:
                                 Swal.fire({
                                     icon: "warning",
@@ -147,11 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         Swal.fire({
                             title: "Kesalahan Lokasi!",
-                            text: errorCode,
+                            text: errorMessage,
                             icon: "error"
                         });
-
-                        resolve(false);
+                        
+                        reject(false);
+                        
                     }
                 );
             } else {
@@ -160,10 +114,86 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: "Geolocation tidak di dukung di broser ini!",
                     icon: "warning"
                 });
-                resolve(false);
+                
+                reject(false);
+
             }
         });
     }
+
+    async function posisiAnda(position) {
+        let letak1 = position.coords.latitude,
+            letak2 = position.coords.longitude;
+
+        let BatasLokasiAccess =[
+            {lat: -6.970946, lng: 110.018758}, // titik batas lokasi yang di izinkan 1. -6.970946,110.018758
+            {lat: -6.970872, lng: 110.018765}, // titik batas lokasi yang di izinkan 2. -6.970872,110.018765
+            {lat: -6.970860, lng: 110.018706}, // titik batas lokasi yang di izinkan 3. -6.970860,110.018706
+            {lat: -6.970945, lng: 110.018698}  // titik batas lokasi yang di izinkan 4. -6.970945,110.018698
+        ];
+
+        let maxRadius = 5; // 5m meter
+        let dalamLokasiAccess = BatasLokasiAccess.some(openCamera => 
+            hitungJarak(letak1, letak2, openCamera.lat, openCamera.lng) <= maxRadius
+        );
+
+        Swal.close();
+
+        if (dalamLokasiAccess) {
+            await Swal.fire({
+                title: "Menyiapkan Kamera!",
+                text: "Harap tunggu sebentar...",
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading(),
+                timer: 3000,
+                timerProgressBar: true
+            });
+    
+            const result = await Swal.fire({
+                imageUrl: "../pic/icon/LokasiTepat.svg",
+                customClass: {
+                    image: "Swal-image-responsive"
+                },
+                title: "Lokasi Valid",
+                text: "Apakah Anda Ingin Lanjut Absensi?",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Lanjut Absen"
+            });
+    
+            if (result.isConfirmed) {
+                StartKamera();
+            }
+        } else {
+            Swal.fire({
+                imageUrl: "../pic/icon/LokasiGedung.svg",
+                text: "Di Luar Lokasi!",
+                imageAlt: "Lokasi Gedung",
+                customClass: {
+                    image: "Swal-image-responsive"
+                }
+            });
+        }
+
+    }  
+
+    function hitungJarak(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // Radius bumi dalam meter
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Jarak dalam meter
+    }
+
+    cekLokasiSaya().then(() => {
+        console.log("Cek lokasi selesai.");
+    }).catch(() => {
+        console.log("Cek lokasi gagal.");
+    });
 
     async function StartKamera() {
         try {
