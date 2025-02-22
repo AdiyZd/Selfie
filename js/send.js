@@ -40,8 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
     }
-        
-    });
 
     async function cekLokasiSaya() {
         return new Promise((resolve, reject) => {
