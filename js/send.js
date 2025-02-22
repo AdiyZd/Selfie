@@ -115,8 +115,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Lokasi Tidak Ditemuakn!",
                                     text: "Silahkan refresh halaman!",
                                     imageUrl: "../pic/icon/LokasiAnda.svg",
-                                    imageHeight: 280,
-                                    imageWidth: 180,
+                                    imageHeight: 300,
+                                    imageWidth: 225,
                                     imageAlt: "Lokasi Tidak Ditemuakn!"
                                 });
                                 break;
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     title: "Koneksi Teganggu",
                                     text: "Silahkan koneksikan jaringan yang cepat!",
                                     imageUrl: "../pic/icon/ServerError.svg",
-                                    imageHeight: 280,
-                                    imageWidth: 180,
+                                    imageHeight: 300,
+                                    imageWidth: 225,
                                     imageAlt: "Koneksi Terganggu!"
                                 })
                                 break;
