@@ -21,18 +21,17 @@ function cekLokasiSaya() {
                 let letak2 = position.coords.longitude;
 
                 let BatasLokasiAccess = [
-                    {lat: -6.949412, lng: 109.963582}, // titik lokasi 1 -6.949412,109.963582
-                    {lat: -6.949704, lng: 109.963524}, // titik lokasi 2 -6.949704,109.963524
-                    {lat: -6.949683, lng: 109.963311}, // titik lokasi 3 -6.949683,109.963311
-                    {lat: -6.949377, lng: 109.963358} // titik lokasi 4 -6.949377,109.963358
+                    {lat: -6.970966, lng: 110.018771}, // titik lokasi 1. -6.970966,110.018771
+                    {lat: -6.970846, lng: 110.018782}, // titik lokasi 2. -6.970846,110.018782
+                    {lat: -6.970838, lng: 110.018688}, // titik lokasi 3. -6.970838,110.018688
+                    {lat: -6.970983, lng: 110.018697}  // titik lokasi 4. -6.970983,110.018697
                 ];
 
-                let maxRadius = 10; // 10meter
+                let maxRadius = 5; // 10meter
 
                 let dalamLokasiAccess = BatasLokasiAccess.some(lokasi => hitungJarak(letak1, letak2, lokasi.lat, lokasi.lng) <= maxRadius);
 
                 if (dalamLokasiAccess) {
-                    //document.getElementById("Hasil").innerText = `Lokasi1: ${letak1}\n Lokasi2: ${letak2}`
                     Swal.close(); // tutup setelah lokasi ditemukan
 
                     Swal.fire({
@@ -133,7 +132,9 @@ function hitungJarak(lat1, lon1, lat2, lon2) {
     const pi = (lat2 - lat1) * Math.PI / 180;
     const pi2 = (lon2 - lon1) * Math.PI / 180;
     
-    const a = Math.sin(pi / 2) * Math.sin(pi / 2) + Math.cos(q1) * Math.cos(q2) * Math.sin(pi2 / 2) * Math.sin(pi2 / 2);
+    const a = Math.sin(pi / 2) * Math.sin(pi / 2) +
+             Math.cos(q1) * Math.cos(q2) *
+             Math.sin(pi2 / 22) * Math.sin(pi2 / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c; // hasil hitungan dalam bentuk meter

@@ -33,9 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sendAbsensi.classList.remove("d-none");
             sendAbsensi.innerHTML = "📸 Ambil Foto";
             sendAbsensi.onclick = capturePhoto;
-
-            // .then(stream => console.log("Kamera Berhasil Di Buka", stream))
-            //.then((error) => console.log("Gagal Mengacces Kamera", error));
+            
         } catch (error) {
             alert("Gagal mengakses kamera: " + error);
         }
@@ -45,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
         .then((value) => console.log("Gagal Mengacces Kamera", error));        
     });
+
+    
 
     function capturePhoto() {
         const ctx = canvas.getContext("2d");
@@ -102,7 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.isConfirmed) {
                 const nama = result.value.trim().substring(0, 50); 
                 const now = new Date();
-                const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const jam = now.toLocaleTi
+                meString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const tanggal = document.getElementById("tanggal")?.textContent?.trim()?.substring(0, 50) || "Tanggal Tidak Ditemukan";
     
                 let timerInterval; 
@@ -227,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const bulanSekarang = new Date().toLocaleString('id-ID', { month: 'long', year: 'numeric' });
-        const fileName = `Absensi_${bulanSekarang}.xlsx`;
+        const fileName = `Absensi ${bulanSekarang}.xlsx`;
 
         absensiData.push([tanggal, jam, nama, fotoBase64]);
 
