@@ -20,10 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (openCamera) {
-        openCamera.addEventListener('click', async function(){
+        openCamera.addEventListener("click", async function(){
             try {
-                if (await cekLokasiSaya()) {
-                    await StartKamera();
+                const lokasiSidiIzinkan = await cekLokasiSaya();
+
+                if (lokasiSidiIzinkan) {
+                    await StartKamera
                 } else {
                     Swal.fire({
                         icon: "warning",
@@ -35,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "Terjadi kesalahan: ", error
+                    text: `Terjadi kesalahan: ${errir.message}`
                 })
             }
         })
