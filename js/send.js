@@ -19,29 +19,52 @@ document.addEventListener("DOMContentLoaded", function () {
         let tahun = now.getFullYear();
     }
 
-    if (openCamera) {
-        openCamera.addEventListener("click", async function(){
+    openCamera.addEventListener("click", async function() {
+        if (openCamera) {
             try {
                 const lokasiSidiIzinkan = await cekLokasiSaya();
 
                 if (lokasiSidiIzinkan) {
-                    await StartKamera
+                    await StartKamera();
                 } else {
                     Swal.fire({
-                        icon: "warning",
-                        title: "Lokasi tidak diizinkan!",
-                        text: "Periksa perizinan lokasi!"
+                        icon: "Warning",
+                        title: "Lokasi tida di izinkan!",
+                        text: "Periksa dan izinkan lokasi di web ini."
                     });
-                };
+                }
             } catch (error) {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: `Terjadi kesalahan: ${errir.message}`
+                    text: `Terjadi kesalahan: ${error.message}`
                 })
             }
-        })
-    };
+        }
+    })
+    // if (openCamera) {
+    //     openCamera.addEventListener("click", async function(){
+    //         try {
+    //             const lokasiSidiIzinkan = await cekLokasiSaya();
+
+    //             if (lokasiSidiIzinkan) {
+    //                 await StartKamera
+    //             } else {
+    //                 Swal.fire({
+    //                     icon: "warning",
+    //                     title: "Lokasi tidak diizinkan!",
+    //                     text: "Periksa perizinan lokasi!"
+    //                 });
+    //             };
+    //         } catch (error) {
+    //             Swal.fire({
+    //                 icon: "error",
+    //                 title: "Error",
+    //                 text: `Terjadi kesalahan: ${errir.message}`
+    //             });
+    //         };
+    //     })
+    // };
 
     async function cekLokasiSaya() {
         return new Promise((resolve, reject) => {
