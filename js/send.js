@@ -266,10 +266,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    console.log("Mencoba Mengacces Kamera");
-    navigator.mediaDevices.getUserMedia({video: true})
-    //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
-    .then((value) => console.log("Gagal Mengacces Kamera", value));
+    // console.log("Mencoba Mengacces Kamera");
+    // navigator.mediaDevices.getUserMedia({video: true})
+    // //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
+    // .then((value) => console.log("Gagal Mengacces Kamera", value));
 
     function capturePhoto() {
         const ctx = canvas.getContext("2d");
