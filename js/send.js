@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     Swal.fire({
                         imageUrl: "../pic/icon/LokasiGedung.svg",
+                        title: "Di luar Jangkauan access",
                         text: "Di luar lokasi SandiKomputer!",
                         imageAlt: "Bukan Lokasi SandiKomputer!",
                         customClass: {
@@ -161,11 +162,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (dalamLokasiAccess) {
             await Swal.fire({
+                imageUrl: "../pic/icon/kamera.gif",
                 title: "Menyiapkan Kamera!",
                 text: "Harap tunggu sebentar...",
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading(),
-                timer: 3000,
+                timer: 7000,
                 timerProgressBar: true
             });
     
