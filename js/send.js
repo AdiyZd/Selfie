@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     title: "Memeriksa lokasi anda!",
                     text: "Mohon tunggu Sebentar",
                     customClass: {
-                        image: "Swal-image-responsive"
+                        image: "Swal-image-responsive-lokasi"
                     },
                     allowOutsideClick: false,
                     didOpen: () => {
@@ -165,6 +165,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 imageUrl: "../pic/icon/kamera.gif",
                 title: "Menyiapkan Kamera!",
                 text: "Harap tunggu sebentar...",
+                customClass: {
+                    image: "Swal-image-responsive-lokasi"
+                },
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading(),
                 timer: 7000,
@@ -265,11 +268,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-
-    // console.log("Mencoba Mengacces Kamera");
-    // navigator.mediaDevices.getUserMedia({video: true})
-    // //.then(stream => console.log("Kamera Berhasil Di Buka", stream))
-    // .then((value) => console.log("Gagal Mengacces Kamera", value));
 
     function capturePhoto() {
         const ctx = canvas.getContext("2d");

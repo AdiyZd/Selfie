@@ -74,17 +74,54 @@ video, img {
 
 
 /* ALRET IMG */
-
+.Swal-image-responsive-lokasi,
 .Swal-image-responsive {
     width: 100%;
     max-width: 300px;
     height: auto;
+
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
 
 /* HP GUWEHH */
 
 @media (max-width: 412px) {
-        .Swal-image-responsive {
-            max-width: 180px;
-        }
+    .Swal-image-responsive-lokasi,
+    .Swal-image-responsive {
+        max-width: 180px;
+    }
+}
+
+/* @media (max-width: 500px) {
+    .Swal-image-responsive {
+        max-width: 180px;
+    }
+} */
+
+@media screen and (max-width: 480px) {
+    .Swal-image-responsive-lokasi,
+    .Swal-image-responsive {
+        max-width: 90vw;  
+        max-height: 60vh; 
+    }
+}
+
+/* 🔹 Untuk layar medium (tablet kecil) */
+@media screen and (max-width: 768px) {
+    .Swal-image-responsive-lokasi,
+    .Swal-image-responsive {
+        max-width: 85vw;
+        max-height: 55vh;
+    }
+}
+
+/* 🔹 Untuk layar besar (desktop) */
+@media screen and (min-width: 1024px) {
+    .Swal-image-responsive-lokasi,
+    .Swal-image-responsive {
+        max-width: 50vw;
+        max-height: 40vh;
+    }
 }
