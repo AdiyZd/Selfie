@@ -234,25 +234,23 @@ document.addEventListener("DOMContentLoaded", function () {
             video.onloadedmetadata = () => {
                 console.log("Medavidio Telah Dimulai");
                 
+                video.play().then(() => {
+                    console.log("Vidio Berhasil Diputar!.");
+                }).catch(err => {
+                    console.error("Gagal memuat vidio: ", err);
+                });
+
                 setTimeout(() => {
-                    video.play().then(() => {
-                        console.log("Vido berhasil diputar.");
-                    }).catch(Err => {
-                        console.error(`Gagal memuat vidio: ${Err}`);
-                    });
-                }, 500)
+                    if (video.videoWidth === 0 || video.videoHeight === 0) {
+                        console.error(" Kamera tidak mengeluarkan gambar! ");
+                        Swal.fire({
+                            title: "Kesalahan",
+                            text: "Kamera aktif tapi tidak mengeluarkan gambar. Coba refresh websaite!",
+                            icon: "error"
+                        });
+                    };
+                }, 1000); // set watu 2detik agar bisa loading
             };
-            
-            setTimeout(() => {
-                if (video.videoWidth === 0 || video.videoWidth === 0) {
-                    console.error(" Kamera tidak mengeluarkan gambar! ");
-                    Swal.fire({
-                        title: "Kesalahan",
-                        text: "Kamera aktif tapi tidak mengeluarkan gambar. Coba refresh websaite!",
-                        icon: "error"
-                    });
-                };
-            }, 2000); // set watu 2detik agar bisa loading
 
             sendAbsensi.classList.remove('d-none');
             sendAbsensi.innerHTML = "📸 Ambil Foto";
