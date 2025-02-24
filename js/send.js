@@ -28,9 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     await StartKamera();
                 } else {
                     Swal.fire({
-                        icon: "Warning",
-                        title: "Lokasi tida di izinkan!",
-                        text: "Periksa dan izinkan lokasi di web ini."
+                        imageUrl: "../pic/icon/LokasiGedung.svg",
+                        text: "Di luar lokasi SandiKomputer!",
+                        imageAlt: "Bukan Lokasi SandiKomputer!",
+                        customClass: {
+                            image: "Swal-image-responsive"
+                        }
                     });
                 }
             } catch (error) {
