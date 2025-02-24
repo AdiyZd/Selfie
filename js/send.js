@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 navigator.geolocation.getCurrentPosition(
                     async function (position) {
-                        await posisiAnda(position);
-                        resolve(true);
+                        let lokasiValid = await posisiAnda(position);
+                        resolve(lokasiValid);
                     },
 
                     function(error) {
@@ -146,8 +146,8 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         let maxRadius = 5; // 5m meter
-        let dalamLokasiAccess = BatasLokasiAccess.some(openCamera => 
-            hitungJarak(letak1, letak2, openCamera.lat, openCamera.lng) <= maxRadius
+        let dalamLokasiAccess = BatasLokasiAccess.some(loc => 
+            hitungJarak(letak1, letak2, loc.lat, loc.lng) <= maxRadius
         );
 
         Swal.close();
@@ -174,10 +174,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Lanjut Absen"
             });
-    
-            if (result.isConfirmed) {
-                StartKamera();
-            }
+
+            return result.isConfirmed; // next jika ya, dan back jika cencel
+
         } else {
             Swal.fire({
                 imageUrl: "../pic/icon/LokasiGedung.svg",
@@ -187,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     image: "Swal-image-responsive"
                 }
             });
+            return false;
         }
 
     }  
