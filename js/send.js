@@ -50,8 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Promise((resolve, reject) => {
             if ("geolocation" in navigator) {
                 Swal.fire({
-                    title: "Mencari Lokasi",
+                    imageUrl: "../pic/icon/location.gif",
+                    title: "Memeriksa lokasi anda!",
                     text: "Mohon tunggu Sebentar",
+                    customClass: {
+                        image: "Swal-image-responsive"
+                    },
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();
