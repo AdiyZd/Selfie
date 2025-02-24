@@ -42,29 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     })
-    // if (openCamera) {
-    //     openCamera.addEventListener("click", async function(){
-    //         try {
-    //             const lokasiSidiIzinkan = await cekLokasiSaya();
-
-    //             if (lokasiSidiIzinkan) {
-    //                 await StartKamera
-    //             } else {
-    //                 Swal.fire({
-    //                     icon: "warning",
-    //                     title: "Lokasi tidak diizinkan!",
-    //                     text: "Periksa perizinan lokasi!"
-    //                 });
-    //             };
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: "error",
-    //                 title: "Error",
-    //                 text: `Terjadi kesalahan: ${errir.message}`
-    //             });
-    //         };
-    //     })
-    // };
 
     async function cekLokasiSaya() {
         return new Promise((resolve, reject) => {
@@ -224,13 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c; // Jarak dalam meter
     }
-
-    cekLokasiSaya().then(() => {
-        console.log("Cek lokasi selesai.");
-    }).catch(() => {
-        console.log("Cek lokasi gagal.");
-    });
-
+    
     async function StartKamera() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
