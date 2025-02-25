@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
-        timer: 7000,
+        timer: 8000, // delapan detik jeda
         timerProgressBar: true,
       });
 
