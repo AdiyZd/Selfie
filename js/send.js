@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { lat: -6.970945, lng: 110.018698 }, // titik batas lokasi yang di izinkan 4. -6.970945,110.018698
     ];
 
-    let maxRadius = 10; // 5m meter
+    let maxRadius = 50; // 5m meter
     let dalamLokasiAccess = BatasLokasiAccess.some(
       (loc) => hitungJarak(letak1, letak2, loc.lat, loc.lng) <= maxRadius
     );
